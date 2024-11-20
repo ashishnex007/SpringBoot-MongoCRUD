@@ -2,7 +2,9 @@ package net.engineeringdigest.journalApp.controller;
 
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repository.UserRepository;
+import net.engineeringdigest.journalApp.service.QuoteService;
 import net.engineeringdigest.journalApp.service.UserService;
+import net.engineeringdigest.journalApp.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,11 +22,10 @@ public class UserController {
     private UserService userService;
     @Autowired
     private UserRepository userRepository;
-
-    @GetMapping
-    public List<User> getAllUsers(){
-        return userService.getAll();
-    }
+    @Autowired
+    private WeatherService weatherService;
+    @Autowired
+    private QuoteService quoteService;
 
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user){
@@ -42,6 +43,17 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         userRepository.deleteByUserName(authentication.getName());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping
+    public ResponseEntity<?> greetings(){
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String quote = "And here's a quote for the day \"" + quoteService.getQuote() + "\"";
+            return new ResponseEntity<>("Hi " + authentication.getName() + " Today weather feels like " + weatherService.getWeather("Hyderabad") + "." + quote,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error: " + e, HttpStatus.NOT_FOUND);
+        }
     }
 
 }
