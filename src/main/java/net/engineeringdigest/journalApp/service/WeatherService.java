@@ -1,24 +1,24 @@
 package net.engineeringdigest.journalApp.service;
 import net.engineeringdigest.journalApp.api.response.WeatherResponse;
+import net.engineeringdigest.journalApp.cache.AppCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@Component
+@Service
 public class WeatherService {
-
-    @Value("${apis.weather.key}")
-    private String weatherAPIKey = "";
-    private String weatherAPI = "https://api.openweathermap.org/data/2.5/weather?q=CITY&appid=" + weatherAPIKey;
 
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AppCache appCache;
+
     public String getWeather(String city){
-        String finalAPI = weatherAPI.replace("CITY", city);
+        String finalAPI = appCache.APP_CACHE.get("weather_api").replace("CITY", city);
         // converting JSON to POJO is called deserialization
         ResponseEntity<WeatherResponse> response = restTemplate.exchange(finalAPI, HttpMethod.GET, null, WeatherResponse.class);
         double tempInCelsius = response.getBody().getMain().getTemp() - 273.15;
