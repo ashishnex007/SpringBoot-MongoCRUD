@@ -3,6 +3,7 @@ package net.engineeringdigest.journalApp.controller;
 import net.engineeringdigest.journalApp.cache.AppCache;
 import net.engineeringdigest.journalApp.entity.User;
 import net.engineeringdigest.journalApp.repository.UserRepository;
+import net.engineeringdigest.journalApp.service.EmailService;
 import net.engineeringdigest.journalApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private AppCache appCache;
@@ -47,6 +51,16 @@ public class AdminController {
     @GetMapping("clear-app-cache")
     public void clearAppCache(){
         appCache.init();
+    }
+
+    @GetMapping("send-mail")
+    public ResponseEntity<?> sendMail(){
+        try{
+            emailService.sendEmail("ashish.goutham@gmail.com", "Hello bro", "fml bro #13reasonsWhyThisSeriesIsShit");
+            return new ResponseEntity<>("Mail sent", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Mail not sent " + e, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
