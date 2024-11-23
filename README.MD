@@ -11,6 +11,8 @@
 - Redis
 - MongoDB
 - Java Mail Sender - SMTP
+- JWT
+- Swagger
 
 ### Implementing Logic Throughout the Spring Boot Project
 **Services -> Repositories -> Controllers**
@@ -41,7 +43,7 @@
      - Define fields and relationships.
      - Annotate with JPA annotations to map to database tables.
 
-## Milestones
+## Milestones throughout this project
 
 ### Adding JavaMailSender
 - Add JavaMailSender dependency in `pom.xml`.
@@ -105,17 +107,7 @@ A **Kafka Consumer** is a client application responsible for reading records fro
 
 - **No Code Integration**: Kafka Connect allows you to configure source and destination systems without writing custom code. Data is directly fetched from the source and written to the destination.
 
----
-
-## Advantages of Apache Kafka
-1. **Scalability**: Kafka scales horizontally by adding brokers to the cluster.
-2. **Fault Tolerance**: Kafka replicates data across brokers to ensure reliability.
-3. **High Throughput**: Capable of handling massive volumes of data with minimal latency.
-4. **Real-time Processing**: Supports real-time data stream processing using Kafka Streams.
-
----
-
 ### Why Didn't Integrate Cloud Kafka?
-The cloud version of Kafka often comes with paid pricing plans, making it less accessible for smaller-scale projects or cost-sensitive applications.
+Cuz it's paid and I'm broke. 😅
 
 
